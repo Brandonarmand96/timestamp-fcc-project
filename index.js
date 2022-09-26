@@ -24,35 +24,22 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/:date_info",  function (req, res){
-  let dateInfo = req.params.date_info;
-  dateValidation = /[a-zA-z]/.test(dateInfo)
-  if (dateValidation){
-    res.json({error: "Invalid Characters entered"})
-  } else {
-    if (dateInfo.includes('-')) {
-      let dateobject = new Date(dateInfo)
-      if (dateobject.toString() === "Invalid Date") {
-        res.json({error: "Invalid Date"})
-      } else {
-        res.json({unix: dateobject.valueOf(), utc: dateobject.toUTCString()})
-      }
-    } else {
-      if (/\d/.test(dateInfo)){
-        let dateInt = parseInt(dateInfo);
-        let dateString = new Date(dateInt).toUTCString()
-        res.json({unix: dateInfo, utc: dateString})
-      } else {
-        res.json({error: "Invalid Characters entered"})
-      }
-    }
+app.get("/api/:date_string", (req, res) => {
+  let dateString = req.params.date_string;
 
+  if (/\d{5,}/.test(dateString)) {
+    let dateInt = parseInt(dateString);
+    res.json({ unix: dateString, utc: new Date(dateInt).toUTCString() });
+  } else {
+    let dateObject = new Date(dateString);
+
+    if (dateObject.toString() === "Invalid Date") {
+      res.json({ error: "Invalid Date" });
+    } else {
+      res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString() });
     }
+  }
 });
-  
-  //res.json({test: dateValidation});
-  
-//);
 
 
 
