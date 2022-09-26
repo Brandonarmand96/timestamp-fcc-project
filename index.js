@@ -27,7 +27,7 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date_string", (req, res) => {
   let dateString = req.params.date_string;
 
-  if (/\d{5,}/.test(dateString)) {
+  if (/\d/.test(dateString)) {
     let dateInt = parseInt(dateString);
     res.json({ unix: dateString, utc: new Date(dateInt).toUTCString() });
   } else {
