@@ -24,10 +24,15 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api", function(req, res) {
+  let now = Date.now();
+  res.json({ unix: now.toString(), utc: new Date(now).toUTCString()})
+})
+
 app.get("/api/:date_string", (req, res) => {
   let dateString = req.params.date_string;
 
-  if (/\d/.test(dateString)) {
+  if (/\d{5,}/.test(dateString)) {
     let dateInt = parseInt(dateString);
     res.json({ unix: dateString, utc: new Date(dateInt).toUTCString() });
   } else {
